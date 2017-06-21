@@ -49,6 +49,30 @@ public class FastScannerTest {
         for(int i = 0;i<n;i++){
             assertEquals(fs.nextInt(), in.nextInt());
         }
+        fs.close();
+    }
+    
+    @Test
+    public void simpleLongTest() throws IOException{
+        FastScanner fs = new FastScanner(FastScannerTest.class.getClassLoader().getResourceAsStream("test/simple_longs.txt"));
+        Scanner in = new Scanner(FastScannerTest.class.getClassLoader().getResourceAsStream("test/simple_longs.txt"));
+        long n = fs.nextLong();
+        assertEquals(n, in.nextLong());
+        for(int i = 0;i<n;i++){
+            assertEquals(fs.nextLong(), in.nextLong());
+        }
+        fs.close();
+    }
+    
+    @Test
+    public void simpleNextTest() throws IOException{
+        FastScanner fs = new FastScanner(FastScannerTest.class.getClassLoader().getResourceAsStream("test/simple_text.txt"));
+        Scanner in = new Scanner(FastScannerTest.class.getClassLoader().getResourceAsStream("test/simple_text.txt"));
+        String next = fs.next();
+        while(!next.isEmpty()){
+            assertEquals(next, in.next());
+            next = fs.next();
+        }
     }
     
     // TODO add test methods here.
