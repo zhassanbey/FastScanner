@@ -16,7 +16,7 @@ import java.io.InputStream;
  */
 public class FastScanner {
 
-    static final int DEFAULT_BUFF = 1024, EOF = -1, INT_MIN = 48, INT_MAX = 57, NOT_SET = -1, POS = 1, DOT=46, SPACE=32;
+    static final int DEFAULT_BUFF = 1024, EOF = -1, INT_MIN = 48, INT_MAX = 57, NOT_SET = -1, POS = 1, DOT=46, SPACE=32, NL = 10, CR = 13;
     static final byte NEG = 45;
     /**
      * Stores digits for corresponding byte values
@@ -114,7 +114,7 @@ public class FastScanner {
     public String next() throws IOException{
         readAllSpaces();
         StringBuilder res = new StringBuilder();
-        while(buff[buffPtr] != SPACE){
+        while(buff[buffPtr] != SPACE && buff[buffPtr] != NL && buff[buffPtr] != CR){
             res.append((char)buff[buffPtr]);
             buffPtr++;
             if(buffPtr >= buff.length){
@@ -159,10 +159,10 @@ public class FastScanner {
         if (buffPtr == NOT_SET || buffPtr == buff.length) {
             updateBuff();
         }
-        if (buff[buffPtr] == EOF) {
+	   if (buff[buffPtr] == EOF) {
             throw new IOException("End of stream reached");
         }
-        while(buff[buffPtr] == SPACE){
+        while(buff[buffPtr] == SPACE || buff[buffPtr] == NL || buff[buffPtr] == CR){
             buffPtr++;
             if(buffPtr>=buff.length){
                 updateBuff();
@@ -204,3 +204,4 @@ public class FastScanner {
         stream.read(buff);
     }
 }
+
