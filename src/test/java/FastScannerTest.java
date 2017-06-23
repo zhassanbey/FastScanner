@@ -6,6 +6,7 @@
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import kz.java.zhassan.io.fastscanner.FastScanner;
 import org.junit.After;
@@ -64,7 +65,7 @@ public class FastScannerTest {
         fs.close();
     }
     
-    @Test
+    @Test(expected = NoSuchElementException.class)
     public void simpleNextTest() throws IOException{
         FastScanner fs = new FastScanner(FastScannerTest.class.getClassLoader().getResourceAsStream("test/simple_text.txt"));
         Scanner in = new Scanner(FastScannerTest.class.getClassLoader().getResourceAsStream("test/simple_text.txt"));
