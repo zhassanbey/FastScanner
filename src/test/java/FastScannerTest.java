@@ -65,14 +65,13 @@ public class FastScannerTest {
         fs.close();
     }
     
-    @Test(expected = NoSuchElementException.class)
+    @Test(expected = IOException.class)
     public void simpleNextTest() throws IOException{
         FastScanner fs = new FastScanner(FastScannerTest.class.getClassLoader().getResourceAsStream("test/simple_text.txt"));
         Scanner in = new Scanner(FastScannerTest.class.getClassLoader().getResourceAsStream("test/simple_text.txt"));
-        String next = fs.next();
-        while(!next.isEmpty()){
+        String next = "start";
+        while(!(next = fs.next()).isEmpty()){
             assertEquals(next, in.next());
-            next = fs.next();
         }
     }
     

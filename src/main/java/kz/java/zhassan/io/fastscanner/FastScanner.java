@@ -16,7 +16,7 @@ import java.io.InputStream;
  */
 public class FastScanner {
 
-    static final int DEFAULT_BUFF = 1024, EOF = -1, INT_MIN = 48, INT_MAX = 57, NOT_SET = -1, POS = 1, DOT=46, SPACE=32, NL = 10, CR = 13;
+    static final int DEFAULT_BUFF = 1024, EOF = -1, INT_MIN = 48, INT_MAX = 57, NOT_SET = -1, POS = 1, DOT = 46, SPACE = 32, NL = 10, CR = 13;
     static final byte NEG = 45;
     /**
      * Stores digits for corresponding byte values
@@ -42,6 +42,10 @@ public class FastScanner {
      * Pointer that points to the byte position in bytes buffer array
      */
     int buffPtr;
+    /**
+     * Shows how many bytes are read into buffer;
+     */
+    int numBytes;
 
     /**
      * Constructor of FastScanner with default bytes buffer size
@@ -77,16 +81,17 @@ public class FastScanner {
     public int nextInt() throws IOException {
         int val = 0;
         int sign = readNonNumerics();
-        while (isDigit(buff[buffPtr]) && buff[buffPtr] != EOF) {
+        while (isDigit(buff[buffPtr]) &&  numBytes != EOF) {
             val = (val << 3) + (val << 1) + digits[buff[buffPtr]];
             buffPtr++;
-            if (buffPtr == buff.length) {
+            if (buffPtr == numBytes) {
                 updateBuff();
             }
         }
         return val * sign;
     }
-     /**
+
+    /**
      * Method for obtaining next available 64 bit integer from the input. Not
      * that it just skips all the non numeric characters around numeric slice
      * and returns the numeric slice.
@@ -97,33 +102,35 @@ public class FastScanner {
     public long nextLong() throws IOException {
         long val = 0L;
         int sign = readNonNumerics();
-        while (isDigit(buff[buffPtr]) && buff[buffPtr] != EOF) {
+        while (isDigit(buff[buffPtr]) && numBytes != EOF) {
             val = (val << 3) + (val << 1) + digits[buff[buffPtr]];
             buffPtr++;
-            if (buffPtr == buff.length) {
+            if (buffPtr == numBytes) {
                 updateBuff();
             }
         }
         return val * sign;
     }
+
     /**
-     * Reads next string slice 
+     * Reads next string slice
+     *
      * @return String the next available string without space characters
      * @throws IOException if some exception occurs while input output
      */
-    public String next() throws IOException{
+    public String next() throws IOException {
         readAllSpaces();
         StringBuilder res = new StringBuilder();
-        while(buff[buffPtr] != SPACE && buff[buffPtr] != NL && buff[buffPtr] != CR){
-            res.append((char)buff[buffPtr]);
+        while (numBytes != EOF && buff[buffPtr] != SPACE && buff[buffPtr] != NL && buff[buffPtr] != CR) {
+            res.append((char) buff[buffPtr]);
             buffPtr++;
-            if(buffPtr >= buff.length){
+            if (buffPtr == buff.length) {
                 updateBuff();
             }
         }
         return res.toString();
     }
-    
+
     /**
      * Reads all non numeric symbols and assigns the buffer's pointer to the
      * first available numeric character byte
@@ -135,7 +142,7 @@ public class FastScanner {
         if (buffPtr == NOT_SET || buffPtr == buff.length) {
             updateBuff();
         }
-        if (buff[buffPtr] == EOF) {
+        if (numBytes == EOF) {
             throw new IOException("End of stream reached");
         }
         int signByte = NOT_SET;
@@ -145,7 +152,7 @@ public class FastScanner {
             if (buffPtr >= buff.length) {
                 updateBuff();
             }
-            if (buff[buffPtr] == EOF) {
+            if (numBytes == EOF) {
                 throw new IOException("End of stream reached");
             }
         }
@@ -155,24 +162,25 @@ public class FastScanner {
         return POS;
     }
 
-    private void readAllSpaces() throws IOException{
-        if (buffPtr == NOT_SET || buffPtr == buff.length) {
+    private void readAllSpaces() throws IOException {
+        if (buffPtr == NOT_SET || buffPtr >= numBytes) {
             updateBuff();
         }
-	   if (buff[buffPtr] == EOF) {
+        if (numBytes == EOF) {
             throw new IOException("End of stream reached");
         }
-        while(buff[buffPtr] == SPACE || buff[buffPtr] == NL || buff[buffPtr] == CR){
+        while (buff[buffPtr] == SPACE || buff[buffPtr] == NL || buff[buffPtr] == CR) {
             buffPtr++;
-            if(buffPtr>=buff.length){
+            if (buffPtr >= numBytes) {
                 updateBuff();
+                
             }
-            if(buff[buffPtr] == EOF){
+            if (numBytes == EOF) {
                 throw new IOException("End of stream reached");
             }
         }
     }
-    
+
     /**
      * Closes the input stream passed as parameter to a constructor. We
      * recommend to avoid calling this method explicitly if not necessary!
@@ -201,7 +209,6 @@ public class FastScanner {
      */
     private void updateBuff() throws IOException {
         buffPtr = 0;
-        stream.read(buff);
+        numBytes = stream.read(buff);
     }
 }
-
