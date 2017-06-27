@@ -211,4 +211,8 @@ public class FastScanner {
         buffPtr = 0;
         numBytes = stream.read(buff);
     }
+    
+    public void reset() throws IOException{
+        this.stream.reset();
+    }
 }
