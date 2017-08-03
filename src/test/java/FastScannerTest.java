@@ -6,6 +6,7 @@
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import kz.java.zhassan.io.fastscanner.FastScanner;
 import org.junit.After;
@@ -48,6 +49,29 @@ public class FastScannerTest {
         assertEquals(n, in.nextInt());
         for(int i = 0;i<n;i++){
             assertEquals(fs.nextInt(), in.nextInt());
+        }
+        fs.close();
+    }
+    
+    @Test
+    public void simpleLongTest() throws IOException{
+        FastScanner fs = new FastScanner(FastScannerTest.class.getClassLoader().getResourceAsStream("test/simple_longs.txt"));
+        Scanner in = new Scanner(FastScannerTest.class.getClassLoader().getResourceAsStream("test/simple_longs.txt"));
+        long n = fs.nextLong();
+        assertEquals(n, in.nextLong());
+        for(int i = 0;i<n;i++){
+            assertEquals(fs.nextLong(), in.nextLong());
+        }
+        fs.close();
+    }
+    
+    @Test(expected = IOException.class)
+    public void simpleNextTest() throws IOException{
+        FastScanner fs = new FastScanner(FastScannerTest.class.getClassLoader().getResourceAsStream("test/simple_text.txt"));
+        Scanner in = new Scanner(FastScannerTest.class.getClassLoader().getResourceAsStream("test/simple_text.txt"));
+        String next = "start";
+        while(!(next = fs.next()).isEmpty()){
+            assertEquals(next, in.next());
         }
     }
     
