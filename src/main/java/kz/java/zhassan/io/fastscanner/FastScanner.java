@@ -92,7 +92,7 @@ public class FastScanner {
     }
 
     /**
-     * Method for obtaining next available 64 bit integer from the input. Not
+     * Method for obtaining next available 64 bit integer from the input. Note
      * that it just skips all the non numeric characters around numeric slice
      * and returns the numeric slice.
      *
@@ -112,6 +112,18 @@ public class FastScanner {
         return val * sign;
     }
 
+
+    /**
+     * Method for reading next available 64 bit floating point number(double).
+     * It is just a simple implementation with parse double operation. Further enhancements will be thought out.    
+     */
+    public double nextDouble() throws IOException{
+        double val = 0d;
+        int sign = readNonNumerics();
+        String doubleStr = next();
+        val = Double.parseDouble(doubleStr);
+        return val*sign;
+    }
     /**
      * Reads next string slice
      *
